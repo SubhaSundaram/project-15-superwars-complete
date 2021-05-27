@@ -141,26 +141,39 @@ class Superwar {
       filtplayer[1].wins += 1
     }
     console.log(this.players)
-    let fragment = `
-   ${this.calculateScore('hero')}-
-   ${this.calculateScore('villain')}`
+    let fragment = `${this.calculateScore()['hero']} - ${
+      this.calculateScore()['villain']
+    }`
     document.getElementById('score').textContent = fragment
     if (this.checkWin() !== 'endure')
       setTimeout(() => this.announceWinner(score), 100)
   }
 
   // Calculate score
-  calculateScore = (type) => {
+  calculateScore = () => {
     // Calculate and return the total score of teams
     // Type your code
     console.log('Calculate Score block')
-    let score = this.filterPlayers(type)
-      .map((player) => player.wins)
-      .reduce(function (acc, cv) {
-        return acc + cv
-      })
+    let score = this.players.reduce(
+      (score, player) => {
+        score[player.type] += player.wins
+        return score
+      },
+      {
+        hero: 0,
+        villain: 0,
+      },
+    )
+
     return score
   }
+  //   let score = this.filterPlayers(type)
+  //     .map((player) => player.wins)
+  //     .reduce(function (acc, cv) {
+  //       return acc + cv
+  //     })
+  //   return score
+  // }
 
   // Check whether there is a win
   checkWin = () => {
